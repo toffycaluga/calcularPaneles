@@ -6,7 +6,7 @@ Este repositorio contiene una herramienta para calcular la máxima cantidad de p
 
 ## Características
 
-- Cálculo del número máximo de paneles que caben en un techo.
+- **calcPaneles()** Cálculo del número máximo de paneles que caben en un techo.
 
 
 ⌨️ escrito con ❤️ por [Toffy Caluga](https://github.com/toffyCaluga)

@@ -15,12 +15,15 @@ function calcularPaneles(techoWidth, techoHeigth, panelWidth, panelHeigth) {
 }
 
 // se le entregan  datos de techo y paneles y llamamos a la funcion calcularPaneles
+console.log("--------------------");
+console.log("Se calculan en un techo de 4x5 con paneles de 2x1");
 calcularPaneles(4, 5, 2, 1)
 // Cantindad de paneles en horizontal:  2
 // Cantindad de paneles en vertical:  5
 // Cantindad total de paneles que caben:  10
 
-
+console.log("--------------------");
+console.log("Se calculan en un techo de 4x5 con paneles de 1x2");
 calcularPaneles(4, 5, 1, 2)
 // Cantindad de paneles en horizontal:  4
 // Cantindad de paneles en vertical:  2
