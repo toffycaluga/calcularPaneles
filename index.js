@@ -11,7 +11,11 @@ function calcularPaneles(techoWidth, techoHeigth, panelWidth, panelHeigth) {
     console.log("Cantindad de paneles en horizontal: ", panelesX);
     console.log("Cantindad de paneles en vertical: ", panelesY);
     console.log("Cantindad total de paneles que caben: ", panelesX * panelesY);
-
+    return {
+        panelesX: panelesX,
+        panelesY: panelesY,
+        total: panelesX * panelesY,
+    }
 }
 
 // se le entregan  datos de techo y paneles y llamamos a la funcion calcularPaneles
