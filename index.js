@@ -45,7 +45,7 @@ function buscarMejorOpcion(techoWidth, techoHeight, panelWidth, panelHeight) {
 }
 
 
-function LlenarSobrante(techoWidth, techoHeight, panelWidth, panelHeight) {
+function llenarSobrante(techoWidth, techoHeight, panelWidth, panelHeight) {
 
     let mejorOpcion = buscarMejorOpcion(techoWidth, techoHeight, panelWidth, panelHeight);
 
@@ -59,6 +59,8 @@ function LlenarSobrante(techoWidth, techoHeight, panelWidth, panelHeight) {
         mejorOpcion.llenarSobrante = buscarMejorOpcion(techoWidth, espacioSobranteHorizontal, panelWidth, panelHeight);
         mejorOpcion = llenarTotales(mejorOpcion)
         console.log(mejorOpcion);
+    } else {
+        mejorOpcion = llenarTotales(mejorOpcion)
     }
 
     // Intenta colocar paneles en el espacio sobrante vertical
@@ -68,18 +70,30 @@ function LlenarSobrante(techoWidth, techoHeight, panelWidth, panelHeight) {
         // se agregan datos al objeto 
         mejorOpcion = llenarTotales(mejorOpcion)
 
-        console.log(mejorOpcion);
+    } else {
+        mejorOpcion = llenarTotales(mejorOpcion)
     }
+    console.log(mejorOpcion);
 
 }
 
 function llenarTotales(mejorOpcion) {
-    const totalPaneles = {
-        total: mejorOpcion.totalPaneles + mejorOpcion.llenarSobrante.totalPaneles,
-        totalprimeraposicion: mejorOpcion.totalPaneles,
-        totalRotados: mejorOpcion.llenarSobrante.totalPaneles
+    if (mejorOpcion.llenarSobrante) {
+        const totalPaneles = {
+            total: mejorOpcion.totalPaneles + mejorOpcion.llenarSobrante.totalPaneles,
+            totalprimeraposicion: mejorOpcion.totalPaneles,
+            totalRotados: mejorOpcion.llenarSobrante.totalPaneles
+        }
+        mejorOpcion.totales = totalPaneles;
+    } else {
+
+        const totalPaneles = {
+            total: mejorOpcion.totalPaneles,
+            totalprimeraposicion: mejorOpcion.totalPaneles,
+            totalRotados: 0
+        }
+        mejorOpcion.totales = totalPaneles;
     }
-    mejorOpcion.totales = totalPaneles;
     return mejorOpcion
 }
 
@@ -124,7 +138,7 @@ function llenarTotales(mejorOpcion) {
 
 
 
-LlenarSobrante(4, 5, 2, 1);
+llenarSobrante(4, 5, 2, 1);
 // {
 //     panelesX: 2,
 //     panelesY: 5,
@@ -136,7 +150,7 @@ LlenarSobrante(4, 5, 2, 1);
 //   espacio Sobrante Horizontal:  0
 //   espacio Sobrante Vertical:  0
 
-LlenarSobrante(3, 5, 2, 1);
+llenarSobrante(3, 5, 2, 1);
 // {
 //     panelesX: 3,
 //     panelesY: 2,
