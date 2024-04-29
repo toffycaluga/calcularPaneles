@@ -2,11 +2,11 @@
 
 
 // Funcion para calcular la cantidad de paneles que caben en una orientacion específica.
-function calcularPaneles(techoWidth, techoHeigth, panelWidth, panelHeigth) {
+function calcularPaneles(techoWidth, techoHeigth, panelWidth, panelHeight) {
     // Se calculan la cantidad de paneles que caen en el ancho del techo
     const panelesX = Math.floor(techoWidth / panelWidth);
     // Se calculan la cantidad de paneles que caen el alto del techo
-    const panelesY = Math.floor(techoHeigth / panelHeigth);
+    const panelesY = Math.floor(techoHeigth / panelHeight);
 
     // console.log("Cantindad de paneles en horizontal: ", panelesX);
     // console.log("Cantindad de paneles en vertical: ", panelesY);
@@ -16,7 +16,7 @@ function calcularPaneles(techoWidth, techoHeigth, panelWidth, panelHeigth) {
         panelesY: panelesY,
         totalPaneles: panelesX * panelesY,
         with: panelWidth,
-        panel: panelHeigth
+        height: panelHeight
     }
 }
 
@@ -29,7 +29,6 @@ function buscarMejorOpcion(techoWidth, techoHeight, panelWidth, panelHeight) {
     let mejorOpcion = {}
     //determinamos la mejor opcion de orientacion 
     if (panelesSinRotar.totalPaneles > panelesRotados.totalPaneles) {
-
         mejorOpcion = panelesSinRotar;
         mejorOpcion.orientacion = "sin rotar"
     } else {
@@ -44,32 +43,45 @@ function buscarMejorOpcion(techoWidth, techoHeight, panelWidth, panelHeight) {
     // console.log("Cantindad total de paneles que caben: ", mejorOpcion.totalPaneles)
     return mejorOpcion
 }
+
+
 function LlenarSobrante(techoWidth, techoHeight, panelWidth, panelHeight) {
 
-    const mejorOpcion = buscarMejorOpcion(techoWidth, techoHeight, panelWidth, panelHeight);
+    let mejorOpcion = buscarMejorOpcion(techoWidth, techoHeight, panelWidth, panelHeight);
 
     // Calcular espacio sobrante y intentar llenarlo con la otra orientación
     const espacioSobranteHorizontal = techoWidth - (mejorOpcion.panelesX * mejorOpcion.with);
     const espacioSobranteVertical = techoHeight - (mejorOpcion.panelesY * mejorOpcion.height);
 
     // Intenta colocar paneles en el espacio sobrante horizontal
-    console.log(mejorOpcion);
     if (espacioSobranteHorizontal > 0) {
-        console.log("hay espacio para paneles en horizontal");
-    } else {
-        console.log("hay espacio para paneles en horizontal");
+        // console.log("hay espacio para paneles en horizontal");
+        mejorOpcion.llenarSobrante = buscarMejorOpcion(techoWidth, espacioSobranteHorizontal, panelWidth, panelHeight);
+        mejorOpcion = llenarTotales(mejorOpcion)
+        console.log(mejorOpcion);
     }
 
     // Intenta colocar paneles en el espacio sobrante vertical
     if (espacioSobranteVertical > 0) {
-        console.log("hay espacio para paneles en vertical");
-    } else {
-        console.log("no hay espacio para paneles en vertical");
+        // se vuelve a analizar el espacio disponible
+        mejorOpcion.llenarSobrante = buscarMejorOpcion(techoWidth, espacioSobranteVertical, panelWidth, panelHeight);
+        // se agregan datos al objeto 
+        mejorOpcion = llenarTotales(mejorOpcion)
+
+        console.log(mejorOpcion);
     }
+
 }
 
-
-
+function llenarTotales(mejorOpcion) {
+    const totalPaneles = {
+        total: mejorOpcion.totalPaneles + mejorOpcion.llenarSobrante.totalPaneles,
+        totalprimeraposicion: mejorOpcion.totalPaneles,
+        totalRotados: mejorOpcion.llenarSobrante.totalPaneles
+    }
+    mejorOpcion.totales = totalPaneles;
+    return mejorOpcion
+}
 
 // se le entregan  datos de techo y paneles y llamamos a la funcion calcularPaneles
 // console.log("--------------------");
@@ -113,3 +125,32 @@ function LlenarSobrante(techoWidth, techoHeight, panelWidth, panelHeight) {
 
 
 LlenarSobrante(4, 5, 2, 1);
+// {
+//     panelesX: 2,
+//     panelesY: 5,
+//     totalPaneles: 10,
+//     with: 2,
+//     height: 1,
+//     orientacion: 'sin rotar'
+//   }
+//   espacio Sobrante Horizontal:  0
+//   espacio Sobrante Vertical:  0
+
+LlenarSobrante(3, 5, 2, 1);
+// {
+//     panelesX: 3,
+//     panelesY: 2,
+//     totalPaneles: 6,
+//     with: 1,
+//     height: 2,
+//     orientacion: 'rotados',
+//     llenarSobrante: {
+//       panelesX: 1,
+//       panelesY: 1,
+//       totalPaneles: 1,
+//       with: 2,
+//       height: 1,
+//       orientacion: 'sin rotar'
+//     },
+//     totales: { total: 7, totalprimeraposicion: 6, totalRotados: 1 }
+//   }
