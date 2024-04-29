@@ -15,21 +15,57 @@ function calcularPaneles(techoWidth, techoHeigth, panelWidth, panelHeigth) {
         panelesX: panelesX,
         panelesY: panelesY,
         totalPaneles: panelesX * panelesY,
+        with: panelWidth,
+        panel: panelHeigth
     }
 }
 
-function BuscarMejorOpcion(techoWidth, techoHeight, panelWidth, panelHeight) {
+function buscarMejorOpcion(techoWidth, techoHeight, panelWidth, panelHeight) {
 
     // Calculamos la cantidad de paneles para ambas orientaciones
     const panelesSinRotar = calcularPaneles(techoWidth, techoHeight, panelWidth, panelHeight);
     const panelesRotados = calcularPaneles(techoWidth, techoHeight, panelHeight, panelWidth);
 
+    let mejorOpcion = {}
     //determinamos la mejor opcion de orientacion 
-    const mejorOpcion = panelesSinRotar.totalPaneles > panelesRotados.totalPaneles ? panelesSinRotar : panelesRotados;
+    if (panelesSinRotar.totalPaneles > panelesRotados.totalPaneles) {
 
-    console.log("Cantindad de paneles en horizontal: ", mejorOpcion.panelesX);
-    console.log("Cantindad de paneles en vertical: ", mejorOpcion.panelesY);
-    console.log("Cantindad total de paneles que caben: ", mejorOpcion.totalPaneles)
+        mejorOpcion = panelesSinRotar;
+        mejorOpcion.orientacion = "sin rotar"
+    } else {
+        mejorOpcion = panelesRotados;
+        mejorOpcion.orientacion = "rotados"
+    }
+
+
+
+    // console.log("Cantindad de paneles en horizontal: ", mejorOpcion.panelesX);
+    // console.log("Cantindad de paneles en vertical: ", mejorOpcion.panelesY);
+    // console.log("Cantindad total de paneles que caben: ", mejorOpcion.totalPaneles)
+    return mejorOpcion
+}
+function LlenarSobrante(techoWidth, techoHeight, panelWidth, panelHeight) {
+
+    const mejorOpcion = buscarMejorOpcion(techoWidth, techoHeight, panelWidth, panelHeight);
+
+    // Calcular espacio sobrante y intentar llenarlo con la otra orientación
+    const espacioSobranteHorizontal = techoWidth - (mejorOpcion.panelesX * mejorOpcion.with);
+    const espacioSobranteVertical = techoHeight - (mejorOpcion.panelesY * mejorOpcion.height);
+
+    // Intenta colocar paneles en el espacio sobrante horizontal
+    console.log(mejorOpcion);
+    if (espacioSobranteHorizontal > 0) {
+        console.log("hay espacio para paneles en horizontal");
+    } else {
+        console.log("hay espacio para paneles en horizontal");
+    }
+
+    // Intenta colocar paneles en el espacio sobrante vertical
+    if (espacioSobranteVertical > 0) {
+        console.log("hay espacio para paneles en vertical");
+    } else {
+        console.log("no hay espacio para paneles en vertical");
+    }
 }
 
 
@@ -52,15 +88,15 @@ function BuscarMejorOpcion(techoWidth, techoHeight, panelWidth, panelHeight) {
 
 
 // Probamos en ambas opciones para ver resultado 
-console.log("--------------------");
-console.log("con paneles 2x1 en parametros");
-console.log("--------------------");
-BuscarMejorOpcion(4, 5, 2, 1)
+// console.log("--------------------");
+// console.log("con paneles 2x1 en parametros");
+// console.log("--------------------");
+// buscarMejorOpcion(4, 5, 2, 1)
 
-console.log("--------------------");
-console.log("con paneles 1x2 en parametros");
-console.log("--------------------");
-BuscarMejorOpcion(4, 5, 1, 2)
+// console.log("--------------------");
+// console.log("con paneles 1x2 en parametros");
+// console.log("--------------------");
+// buscarMejorOpcion(4, 5, 1, 2)
 
 // --------------------
 // con paneles 2x1 en parametros
@@ -73,3 +109,7 @@ BuscarMejorOpcion(4, 5, 1, 2)
 // Cantindad de paneles en horizontal:  2
 // Cantindad de paneles en vertical:  5
 // Cantindad total de paneles que caben:  10
+
+
+
+LlenarSobrante(4, 5, 2, 1);
